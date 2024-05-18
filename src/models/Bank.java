@@ -23,4 +23,35 @@ public final class Bank {
         this.accounts.add(account);
     }
 
+    public float getTotalTransactionFeeAmount() {
+        return totalTransactionFeeAmount;
+    }
+
+    public void setTotalTransactionFeeAmount(float totalTransactionFeeAmount) {
+        this.totalTransactionFeeAmount = totalTransactionFeeAmount;
+    }
+
+    public float getTotalTransferAmount() {
+        return totalTransferAmount;
+    }
+
+    public void setTotalTransferAmount(float totalTransferAmount) {
+        this.totalTransferAmount = totalTransferAmount;
+    }
+
+    public float getTransactionFlatFeeAmount() {
+        return transactionFlatFeeAmount;
+    }
+
+    public void setTransactionFlatFeeAmount(float transactionFlatFeeAmount) {
+        this.transactionFlatFeeAmount = transactionFlatFeeAmount;
+    }
+
+    public float getTransactionPercentFeeValue() {
+        return transactionPercentFeeValue;
+    }
+
+    public void setTransactionPercentFeeValue(float transactionPercentFeeValue) {
+        this.transactionPercentFeeValue = transactionPercentFeeValue;
+    }
 }

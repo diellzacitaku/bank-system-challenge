@@ -1,50 +1,36 @@
 package services;
 
 import models.Account;
-import repository.AccountRepository;
+import models.Bank;
+import repository.BankAccountRepository;
 
 public class AccountService {
+    private final BankService bankService;
 
-    public Account getAccount(String accountId) {
-        Account account = AccountRepository.accounts.get(accountId);
+    public AccountService(BankService bankService) {
+        this.bankService = bankService;
+    }
+
+    public Account createAccount(String bankName, String accountName) {
+        Account account = new Account(accountName);
+        Bank bank = bankService.getBank(bankName);
+
+        BankAccountRepository.bankAccounts.get(bank).put(account.getId(), account);
+
+        return account;
+    }
+
+    public Account getAccount(String bankName, String accountId) {
+        Bank bank = bankService.getBank(bankName);
+        Account account = BankAccountRepository.bankAccounts.get(bank).get(accountId);
+
         if (account == null) {
             throw new RuntimeException();
         }
         return account;
     }
 
-    public float getAccountBalance(String accountId) {
-        return getAccount(accountId).getBalance();
+    public float getAccountBalance(String bankName, String accountId) {
+        return getAccount(bankName, accountId).getBalance();
     }
-
-    public Account createAccount(String name) {
-        Account account = new Account(name);
-        AccountRepository.accounts.put(account.getId(), account);
-        return account;
-    }
-
-    public float withdraw(String accountId, float amount) {
-        validateAmount(amount);
-
-        float currentAccountBalance = getAccountBalance(accountId);
-        getAccount(accountId).setBalance(currentAccountBalance - amount);
-
-        return getAccountBalance(accountId);
-    }
-
-    public float deposit(String accountId, float amount) {
-        validateAmount(amount);
-
-        float currentAccountBalance = getAccountBalance(accountId);
-        getAccount(accountId).setBalance(currentAccountBalance + amount);
-
-        return getAccountBalance(accountId);
-    }
-
-    private void validateAmount(float amount) {
-        if (amount < 0) {
-            throw new RuntimeException();
-        }
-    }
-
 }
