@@ -1,12 +1,12 @@
 package services;
 
-import models.Account;
-import models.Bank;
-import models.Transaction;
-import models.TransactionFeeType;
+import models.*;
 import repository.TransactionRepository;
 
+import java.util.List;
+
 public class TransactionService {
+
     private final AccountService accountService;
     private final BankService bankService;
 
@@ -15,54 +15,81 @@ public class TransactionService {
         this.bankService = bankService;
     }
 
-    public Transaction transferFunds(String originatingBankName, String receivingBankName,  String originatingAccountId,  String resultingAccountId, float amount, String reason, TransactionFeeType transactionFeeType) {
+    public List<Transaction> getAllTransactions(String bankName, String accountId) {
+        Account account = accountService.getAccount(bankName, accountId);
+        return TransactionRepository.accountTransactions.get(account);
+    }
+
+    public void transferFunds(String originatingBankName,
+                              String receivingBankName,
+                              String originatingAccountId,
+                              String resultingAccountId,
+                              float amount,
+                              String reason,
+                              TransactionFeeType transactionFeeType) {
         Account originatingAccount = accountService.getAccount(originatingBankName, originatingAccountId);
         Account resultingAccount = accountService.getAccount(receivingBankName, resultingAccountId);
 
-        withdraw(originatingBankName, originatingAccount.getId(), amount, transactionFeeType);
-        deposit(receivingBankName, resultingAccount.getId(), amount, transactionFeeType);
-
-        Transaction transaction = new Transaction(originatingAccountId, resultingAccountId, amount, reason);
-        TransactionRepository.transactions.add(transaction);
-
-        return transaction;
+        withdraw(originatingBankName, originatingAccount.getId(), amount, transactionFeeType, reason);
+        deposit(receivingBankName, resultingAccount.getId(), amount, transactionFeeType, reason);
     }
 
-    public Transaction transferFunds(String bankName, String originatingAccountId, String resultingAccountId, float amount, String reason, TransactionFeeType transactionFeeType) {
+    public void transferFunds(String bankName,
+                              String originatingAccountId,
+                              String resultingAccountId,
+                              float amount,
+                              String reason,
+                              TransactionFeeType transactionFeeType) {
         Account originatingAccount = accountService.getAccount(bankName, originatingAccountId);
         Account resultingAccount = accountService.getAccount(bankName, resultingAccountId);
 
-        withdraw(bankName, originatingAccount.getId(), amount, transactionFeeType);
-        deposit(bankName, resultingAccount.getId(), amount, transactionFeeType);
-
-        Transaction transaction = new Transaction(originatingAccountId, resultingAccountId, amount, reason);
-        TransactionRepository.transactions.add(transaction);
-
-        return transaction;
+        withdraw(bankName, originatingAccount.getId(), amount, transactionFeeType, reason);
+        deposit(bankName, resultingAccount.getId(), amount, transactionFeeType, reason);
     }
 
-    public Transaction withdraw(String bankName, String accountId, float amount, TransactionFeeType transactionFeeType) {
+    public void withdraw(String bankName,
+                         String accountId,
+                         float amount,
+                         TransactionFeeType transactionFeeType,
+                         String reason) {
         float fee = calculateFee(bankName, amount, transactionFeeType);
 
-        float currentAccountBalance = accountService.getAccountBalance(bankName, accountId);
-        accountService.getAccount(bankName, accountId).setBalance(currentAccountBalance - amount - fee);
+        Account account = updateAccountBalance(bankName, accountId, -amount - fee);
 
-        Transaction transaction = new Transaction(accountId, null, amount, "withdraw");
-        TransactionRepository.transactions.add(transaction);
-
-        return transaction;
+        Transaction transaction =
+                new Transaction(TransactionType.WITHDRAWAL, accountId, null, amount, fee, reason);
+        TransactionRepository.accountTransactions.get(account).add(transaction);
     }
 
-    public Transaction deposit(String bankName, String accountId, float amount, TransactionFeeType transactionFeeType) {
+    public void deposit(String bankName,
+                        String accountId,
+                        float amount,
+                        TransactionFeeType transactionFeeType,
+                        String reason) {
         float fee = calculateFee(bankName, amount, transactionFeeType);
+        Account account = updateAccountBalance(bankName, accountId, amount - fee);
 
+        updateBankTotalTransactionAmount(bankName, amount, fee);
+
+        Transaction transaction = new Transaction(TransactionType.DEPOSIT, null, accountId, amount, fee, reason);
+        TransactionRepository.accountTransactions.get(account).add(transaction);
+    }
+
+    private Account updateAccountBalance(String bankName, String accountId, float amount) {
         float currentAccountBalance = accountService.getAccountBalance(bankName, accountId);
-        accountService.getAccount(bankName, accountId).setBalance(currentAccountBalance + amount - fee);
+        Account account = accountService.getAccount(bankName, accountId);
+        account.setBalance(currentAccountBalance + amount);
+        return account;
+    }
 
-        Transaction transaction = new Transaction(null, accountId, amount, "deposit");
-        TransactionRepository.transactions.add(transaction);
+    private void updateBankTotalTransactionAmount(String bankName, float fee, float amount) {
+        Bank bank = bankService.getBank(bankName);
 
-        return transaction;
+        float bankTotalFeeAmount = bank.getTotalTransactionFeeAmount();
+        bank.setTotalTransactionFeeAmount(bankTotalFeeAmount + fee);
+
+        float bankTotalAmount = bank.getTotalTransferAmount();
+        bank.setTotalTransferAmount(bankTotalAmount + amount);
     }
 
     private float calculateFee(String bankName, float amount, TransactionFeeType transactionFeeType) {

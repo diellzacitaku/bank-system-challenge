@@ -3,6 +3,7 @@ package models;
 import utils.IdUtils;
 
 public class Account {
+
     private final String id;
     private final String name;
     private float balance;
@@ -28,4 +29,5 @@ public class Account {
         }
         this.balance = balance;
     }
+
 }

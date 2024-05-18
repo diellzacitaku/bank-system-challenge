@@ -3,8 +3,12 @@ package services;
 import models.Account;
 import models.Bank;
 import repository.BankAccountRepository;
+import repository.TransactionRepository;
+
+import static java.util.List.of;
 
 public class AccountService {
+
     private final BankService bankService;
 
     public AccountService(BankService bankService) {
@@ -16,6 +20,7 @@ public class AccountService {
         Bank bank = bankService.getBank(bankName);
 
         BankAccountRepository.bankAccounts.get(bank).put(account.getId(), account);
+        TransactionRepository.accountTransactions.put(account, of());
 
         return account;
     }
@@ -33,4 +38,5 @@ public class AccountService {
     public float getAccountBalance(String bankName, String accountId) {
         return getAccount(bankName, accountId).getBalance();
     }
+
 }

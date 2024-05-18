@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Bank {
+
     private final String name;
     private final List<Account> accounts = new ArrayList<>();
     private float totalTransactionFeeAmount = 0;
@@ -54,4 +55,5 @@ public final class Bank {
     public void setTransactionPercentFeeValue(float transactionPercentFeeValue) {
         this.transactionPercentFeeValue = transactionPercentFeeValue;
     }
+
 }
