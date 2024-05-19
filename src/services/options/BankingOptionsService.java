@@ -17,6 +17,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     public void showOptions() {
+        System.out.println();
         System.out.println(AuthenticationService.getCurrentUser().getName() + ", please choose an option: ");
         System.out.println("(1) Withdraw");
         System.out.println("(2) Deposit");
@@ -34,7 +35,6 @@ public class BankingOptionsService implements UserOptions {
         } catch (NumberFormatException e) {
             throw new InvalidOptionsException();
         }
-        System.out.println();
 
         switch (input) {
             case 1 -> withdraw();
@@ -50,6 +50,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void withdraw() {
+        System.out.println();
         System.out.println("--- Withdraw funds ---");
 
         float amount = readAmount();
@@ -62,6 +63,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void deposit() {
+        System.out.println();
         System.out.println("--- Deposit funds ---");
 
         float amount = readAmount();
@@ -74,6 +76,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void internalTransfer() {
+        System.out.println();
         System.out.println("--- Transfer funds internally ---");
 
         System.out.print("Please enter the ID of the receiving account: ");
@@ -92,6 +95,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void externalTransfer() {
+        System.out.println();
         System.out.println("--- Transfer funds externally ---");
 
         System.out.print("Please enter the ID of the receiving account: ");
@@ -114,6 +118,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void balance() {
+        System.out.println();
         System.out.println("--- Account balance ---");
 
         Account account = AuthenticationService.getCurrentUser();
@@ -121,6 +126,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void transactionHistory() {
+        System.out.println();
         System.out.println("--- Transaction history ---");
 
         String currentBankName = AuthenticationService.getCurrentBankName();
@@ -130,6 +136,7 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void accountInformation() {
+        System.out.println();
         System.out.println("--- Account Information ---");
 
         Account account = AuthenticationService.getCurrentUser();

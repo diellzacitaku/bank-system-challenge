@@ -11,13 +11,14 @@ import java.util.Objects;
 
 public class AccountService {
 
-    public static void createAccount(String bankName, String accountName, String email, String password) {
+    public static Account createAccount(String bankName, String accountName, String email, String password) {
         Account account = new Account(accountName, email, password);
         Bank bank = BankService.getBank(bankName);
 
         BankAccountRepository.bankAccounts.get(bank).add(account);
         TransactionRepository.accountTransactions.put(account, new ArrayList<>());
 
+        return account;
     }
 
     public static Account getAccount(String bankName, String email, String password) {

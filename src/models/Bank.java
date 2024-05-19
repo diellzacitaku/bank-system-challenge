@@ -48,4 +48,11 @@ public final class Bank {
         this.transactionPercentFeeValue = transactionPercentFeeValue;
     }
 
+    @Override
+    public String toString() {
+        return "Bank name='" + name + '\'' +
+                ", transaction flat fee amount=" + transactionFlatFeeAmount + "$" +
+                ", transaction percent fee value=" + transactionPercentFeeValue + "%";
+    }
+
 }

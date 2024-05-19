@@ -29,15 +29,13 @@ public final class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "timestamp=" + timestamp +
-                ", transactionType=" + transactionType +
-                ", originatingAccountId='" + originatingAccountId + '\'' +
-                ", receivingAccountId='" + receivingAccountId + '\'' +
+        return "timestamp=" + timestamp +
+                ", transaction type=" + transactionType +
+                ", originating account id='" + originatingAccountId + '\'' +
+                ", receiving account id='" + receivingAccountId + '\'' +
                 ", amount=" + amount +
                 ", fee=" + fee +
-                ", reason='" + reason + '\'' +
-                '}';
+                ", reason='" + reason + '\'';
     }
 
 }
