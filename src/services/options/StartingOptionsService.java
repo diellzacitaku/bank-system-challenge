@@ -1,7 +1,6 @@
 package services.options;
 
 import exception.InvalidOptionsException;
-import org.w3c.dom.ls.LSOutput;
 import services.AuthenticationService;
 import services.BankService;
 
