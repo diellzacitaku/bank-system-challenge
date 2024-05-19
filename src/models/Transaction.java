@@ -35,7 +35,7 @@ public final class Transaction {
                 ", receiving account id='" + receivingAccountId + '\'' +
                 ", amount=" + amount +
                 ", fee=" + fee +
-                ", reason='" + reason + "'\n";
+                ", reason='" + reason + '\'';
     }
 
 }

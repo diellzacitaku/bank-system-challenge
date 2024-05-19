@@ -137,7 +137,7 @@ public class BankingOptionsService implements UserOptions {
         String currentBankName = AuthenticationService.getCurrentBankName();
         Account currentAccount = AuthenticationService.getCurrentUser();
 
-        System.out.println(TransactionService.getAllTransactions(currentBankName, currentAccount.getId()));
+        TransactionService.getAllTransactions(currentBankName, currentAccount.getId()).forEach(System.out::println);
         System.out.println("--------------------");
     }
 
