@@ -1,15 +1,16 @@
 package models;
 
+import exception.InsufficientBalanceException;
 import utils.IdUtils;
 
 public class Account {
 
+    private static final float DEFAULT_BALANCE = 0;
     private final String id;
     private final String email;
     private final String password;
     private final String name;
     private float balance;
-    private static final float DEFAULT_BALANCE = 0;
 
     public Account(String name, String email, String password) {
         this.id = IdUtils.generateId();
@@ -29,7 +30,7 @@ public class Account {
 
     public void setBalance(float balance) {
         if (balance < 0) {
-            throw new RuntimeException();
+            throw new InsufficientBalanceException();
         }
         this.balance = balance;
     }

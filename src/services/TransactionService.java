@@ -1,6 +1,11 @@
 package services;
 
-import models.*;
+import exception.InvalidAmountException;
+import models.Account;
+import models.Bank;
+import models.Transaction;
+import models.TransactionFeeType;
+import models.TransactionType;
 import repository.TransactionRepository;
 
 import java.util.List;
@@ -96,7 +101,7 @@ public class TransactionService {
 
     private static void validateAmount(float amount) {
         if (amount < 0) {
-            throw new RuntimeException();
+            throw new InvalidAmountException();
         }
     }
 

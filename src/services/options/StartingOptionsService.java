@@ -1,5 +1,6 @@
 package services.options;
 
+import exception.InvalidOptionsException;
 import services.AuthenticationService;
 import services.BankService;
 
@@ -20,15 +21,19 @@ public class StartingOptionsService implements UserOptions {
         System.out.println("(3) Register account");
         System.out.print("Your choice: ");
 
-        int input = scanner.nextInt();
-        scanner.nextLine();
+        int input;
+        try {
+            input = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            throw new InvalidOptionsException();
+        }
         System.out.println();
 
         switch (input) {
             case 1 -> createBank();
             case 2 -> login();
             case 3 -> register();
-            default -> throw new RuntimeException();
+            default -> throw new InvalidOptionsException();
         }
     }
 

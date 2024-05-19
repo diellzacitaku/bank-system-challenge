@@ -16,7 +16,11 @@ public class Application {
             } else {
                 userOptions = bankingOptionsService;
             }
-            userOptions.showOptions();
+            try {
+                userOptions.showOptions();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
     }

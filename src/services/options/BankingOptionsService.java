@@ -1,5 +1,6 @@
 package services.options;
 
+import exception.InvalidOptionsException;
 import models.Account;
 import models.TransactionFeeType;
 import services.AuthenticationService;
@@ -27,8 +28,12 @@ public class BankingOptionsService implements UserOptions {
         System.out.println("(8) Log out");
         System.out.print("Your choice: ");
 
-        int input = scanner.nextInt();
-        scanner.nextLine();
+        int input;
+        try {
+            input = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            throw new InvalidOptionsException();
+        }
         System.out.println();
 
         switch (input) {
@@ -40,7 +45,7 @@ public class BankingOptionsService implements UserOptions {
             case 6 -> transactionHistory();
             case 7 -> accountInformation();
             case 8 -> logout();
-            default -> throw new RuntimeException();
+            default -> throw new InvalidOptionsException();
         }
     }
 
@@ -140,9 +145,13 @@ public class BankingOptionsService implements UserOptions {
 
     private float readAmount() {
         System.out.print("Please enter the amount: ");
-        float amount = scanner.nextFloat();
-        scanner.nextLine();
-        return amount;
+        float input;
+        try {
+            input = Float.parseFloat(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            throw new InvalidOptionsException();
+        }
+        return input;
     }
 
     private TransactionFeeType readTransactionFeeType() {
@@ -151,7 +160,7 @@ public class BankingOptionsService implements UserOptions {
         return switch (feeType.toLowerCase()) {
             case "flat" -> TransactionFeeType.FLAT;
             case "percentage" -> TransactionFeeType.PERCENTAGE;
-            default -> throw new RuntimeException();
+            default -> throw new InvalidOptionsException();
         };
     }
 
