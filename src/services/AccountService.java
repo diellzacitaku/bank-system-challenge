@@ -5,37 +5,43 @@ import models.Bank;
 import repository.BankAccountRepository;
 import repository.TransactionRepository;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 import static java.util.List.of;
 
 public class AccountService {
 
-    private final BankService bankService;
+    public static Account createAccount(String bankName, String accountName, String email, String password) {
+        Account account = new Account(accountName, email, password);
+        Bank bank = BankService.getBank(bankName);
 
-    public AccountService(BankService bankService) {
-        this.bankService = bankService;
-    }
-
-    public Account createAccount(String bankName, String accountName) {
-        Account account = new Account(accountName);
-        Bank bank = bankService.getBank(bankName);
-
-        BankAccountRepository.bankAccounts.get(bank).put(account.getId(), account);
-        TransactionRepository.accountTransactions.put(account, of());
+        BankAccountRepository.bankAccounts.get(bank).add(account);
+        TransactionRepository.accountTransactions.put(account, new ArrayList<>());
 
         return account;
     }
 
-    public Account getAccount(String bankName, String accountId) {
-        Bank bank = bankService.getBank(bankName);
-        Account account = BankAccountRepository.bankAccounts.get(bank).get(accountId);
-
-        if (account == null) {
-            throw new RuntimeException();
-        }
-        return account;
+    public static Account getAccount(String bankName, String email, String password) {
+        Bank bank = BankService.getBank(bankName);
+        return BankAccountRepository.bankAccounts.get(bank)
+                .stream()
+                .filter(account -> Objects.equals(account.getEmail(), email) &&
+                        Objects.equals(account.getPassword(), password))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
     }
 
-    public float getAccountBalance(String bankName, String accountId) {
+    public static Account getAccount(String bankName, String accountId) {
+        Bank bank = BankService.getBank(bankName);
+        return BankAccountRepository.bankAccounts.get(bank)
+                .stream()
+                .filter(account -> Objects.equals(account.getId(), accountId))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+    }
+
+    public static float getAccountBalance(String bankName, String accountId) {
         return getAccount(bankName, accountId).getBalance();
     }
 

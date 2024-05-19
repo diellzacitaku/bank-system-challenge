@@ -28,4 +28,17 @@ public final class Transaction {
         this.reason = reason;
     }
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "timestamp=" + timestamp +
+                ", transactionType=" + transactionType +
+                ", originatingAccountId='" + originatingAccountId + '\'' +
+                ", receivingAccountId='" + receivingAccountId + '\'' +
+                ", amount=" + amount +
+                ", fee=" + fee +
+                ", reason='" + reason + '\'' +
+                '}';
+    }
+
 }

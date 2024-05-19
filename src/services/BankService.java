@@ -7,9 +7,11 @@ import repository.BankRepository;
 
 import java.util.*;
 
+import static java.util.List.of;
+
 public class BankService {
 
-    public Bank getBank(String bankName) {
+    public static Bank getBank(String bankName) {
         return BankRepository.banks
                 .stream()
                 .filter(bank -> Objects.equals(bank.getName(), bankName))
@@ -17,15 +19,15 @@ public class BankService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public List<Bank> getAllBanks() {
+    public static List<Bank> getAllBanks() {
         return BankRepository.banks;
     }
 
-    public Bank createBank(String name) {
+    public static Bank createBank(String name) {
         Bank bank = new Bank(name);
 
         BankRepository.banks.add(bank);
-        BankAccountRepository.bankAccounts.put(bank, Map.of());
+        BankAccountRepository.bankAccounts.put(bank, new ArrayList<>());
 
         return bank;
     }
