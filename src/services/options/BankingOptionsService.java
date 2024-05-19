@@ -17,7 +17,6 @@ public class BankingOptionsService implements UserOptions {
     }
 
     public void showOptions() {
-        System.out.println();
         System.out.println(AuthenticationService.getCurrentUser().getName() + ", please choose an option: ");
         System.out.println("(1) Withdraw");
         System.out.println("(2) Deposit");
@@ -50,7 +49,6 @@ public class BankingOptionsService implements UserOptions {
     }
 
     private void withdraw() {
-        System.out.println();
         System.out.println("--- Withdraw funds ---");
 
         float amount = readAmount();
@@ -60,10 +58,11 @@ public class BankingOptionsService implements UserOptions {
         Account account = AuthenticationService.getCurrentUser();
 
         TransactionService.withdraw(currentBankName, account.getId(), amount, feeType, "ATM");
+        System.out.println("Successfully withdrew funds!");
+        System.out.println("--------------------");
     }
 
     private void deposit() {
-        System.out.println();
         System.out.println("--- Deposit funds ---");
 
         float amount = readAmount();
@@ -73,10 +72,11 @@ public class BankingOptionsService implements UserOptions {
         Account account = AuthenticationService.getCurrentUser();
 
         TransactionService.deposit(currentBankName, account.getId(), amount, feeType, "ATM");
+        System.out.println("Successfully deposited funds!");
+        System.out.println("--------------------");
     }
 
     private void internalTransfer() {
-        System.out.println();
         System.out.println("--- Transfer funds internally ---");
 
         System.out.print("Please enter the ID of the receiving account: ");
@@ -92,10 +92,11 @@ public class BankingOptionsService implements UserOptions {
         Account account = AuthenticationService.getCurrentUser();
 
         TransactionService.transferFunds(currentBankName, account.getId(), receivingAccountId, amount, feeType, reason);
+        System.out.println("Successfully transferred the funds!");
+        System.out.println("--------------------");
     }
 
     private void externalTransfer() {
-        System.out.println();
         System.out.println("--- Transfer funds externally ---");
 
         System.out.print("Please enter the ID of the receiving account: ");
@@ -115,6 +116,9 @@ public class BankingOptionsService implements UserOptions {
 
         TransactionService.transferFunds(currentBankName, receivingBankName, account.getId(), receivingAccountId,
                 amount, feeType, reason);
+
+        System.out.println("Successfully transferred the funds!");
+        System.out.println("--------------------");
     }
 
     private void balance() {
@@ -123,6 +127,7 @@ public class BankingOptionsService implements UserOptions {
 
         Account account = AuthenticationService.getCurrentUser();
         System.out.println("Your current balance: " + account.getBalance());
+        System.out.println("--------------------");
     }
 
     private void transactionHistory() {
@@ -133,6 +138,7 @@ public class BankingOptionsService implements UserOptions {
         Account currentAccount = AuthenticationService.getCurrentUser();
 
         System.out.println(TransactionService.getAllTransactions(currentBankName, currentAccount.getId()));
+        System.out.println("--------------------");
     }
 
     private void accountInformation() {
@@ -143,11 +149,13 @@ public class BankingOptionsService implements UserOptions {
         System.out.println("Your account Id: " + account.getId());
         System.out.println("Your account name: " + account.getName());
         System.out.println("Your account email: " + account.getEmail());
-
+        System.out.println("--------------------");
     }
 
     private void logout() {
         AuthenticationService.logout();
+        System.out.println("Successfully logged out!");
+        System.out.println("--------------------");
     }
 
     private float readAmount() {

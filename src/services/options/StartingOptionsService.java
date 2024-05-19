@@ -1,6 +1,7 @@
 package services.options;
 
 import exception.InvalidOptionsException;
+import org.w3c.dom.ls.LSOutput;
 import services.AuthenticationService;
 import services.BankService;
 
@@ -45,17 +46,17 @@ public class StartingOptionsService implements UserOptions {
     }
 
     private void createBank() {
-        System.out.println();
         System.out.println("--- Create a bank ---");
 
         System.out.print("Please enter your bank name: ");
         String bankName = scanner.nextLine();
 
         BankService.createBank(bankName);
+        System.out.println("Successfully created a bank!");
+        System.out.println("--------------------");
     }
 
     private void login() {
-        System.out.println();
         System.out.println("--- Login to your account ---");
 
         System.out.print("Please enter your bank name: ");
@@ -68,10 +69,11 @@ public class StartingOptionsService implements UserOptions {
         String password = scanner.nextLine();
 
         AuthenticationService.login(bankName, email, password);
+        System.out.println("Successfully logged in!");
+        System.out.println("--------------------");
     }
 
     private void register() {
-        System.out.println();
         System.out.println("--- Register an account ---");
 
         System.out.print("Please enter your bank name: ");
@@ -87,16 +89,17 @@ public class StartingOptionsService implements UserOptions {
         String password = scanner.nextLine();
 
         AuthenticationService.register(bankName, name, email, password);
+        System.out.println("Successfully registered an account!");
+        System.out.println("--------------------");
     }
 
     private void viewAllBanks() {
-        System.out.println();
         System.out.println("--- View all banks ---");
-        System.out.println(BankService.getAllBanks());
+        BankService.getAllBanks().forEach(System.out::println);
+        System.out.println("--------------------");
     }
 
     private void viewBankTotalTransactionFee() {
-        System.out.println();
         System.out.println("--- View bank total transaction fee ---");
 
         System.out.print("Please enter your bank name: ");
@@ -104,16 +107,17 @@ public class StartingOptionsService implements UserOptions {
 
         System.out.println(
                 "Total transaction fee amount: " + BankService.getBank(bankName).getTotalTransactionFeeAmount());
+        System.out.println("--------------------");
     }
 
     private void viewBankTotalTransfer() {
-        System.out.println();
         System.out.println("--- View bank total transfer amount ---");
 
         System.out.print("Please enter your bank name: ");
         String bankName = scanner.nextLine();
 
         System.out.println("Total transfer amount: " + BankService.getBank(bankName).getTotalTransferAmount());
+        System.out.println("--------------------");
     }
 
 }

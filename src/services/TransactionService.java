@@ -79,7 +79,7 @@ public class TransactionService {
         return account;
     }
 
-    private static void updateBankTotalTransactionAmount(String bankName, float fee, float amount) {
+    private static void updateBankTotalTransactionAmount(String bankName, float amount, float fee) {
         Bank bank = BankService.getBank(bankName);
 
         float bankTotalFeeAmount = bank.getTotalTransactionFeeAmount();

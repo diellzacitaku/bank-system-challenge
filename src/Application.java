@@ -35,10 +35,12 @@ public class Application {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Populate with pre-made data (yes/no)?: ");
+        System.out.print("Add existing data (yes/no)?: ");
         String populateInput = scanner.nextLine();
         if (Objects.equals(populateInput, "yes")) {
             populateData();
+            System.out.println("Successfully added data!");
+            System.out.println("--------------------");
         }
 
         StartingOptionsService userInputService = new StartingOptionsService();

@@ -50,7 +50,7 @@ public final class Bank {
 
     @Override
     public String toString() {
-        return "Bank name='" + name + '\'' +
+        return "\nBank name='" + name + '\'' +
                 ", transaction flat fee amount=" + transactionFlatFeeAmount + "$" +
                 ", transaction percent fee value=" + transactionPercentFeeValue + "%";
     }
